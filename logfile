@@ -64,3 +64,11 @@ ERROR:  syntax error at or near "{" at character 87
 STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(#{account_id}, "#{formatted_date}", "#{row["Payee"]}", "#{row["Category"]}", #{outflow}, #{inflow});
 ERROR:  syntax error at or near "S" at character 114
 STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES('2', '2017/1/10', 'APPLEBEE'S', 'Entertainment', 100.0, 0.0);
+ERROR:  column "priya" does not exist at character 35
+STATEMENT:  SELECT * FROM accounts WHERE name=priya;
+ERROR:  column "priya" does not exist at character 35
+STATEMENT:  SELECT * FROM accounts WHERE name="priya";
+ERROR:  column "priya" does not exist at character 35
+STATEMENT:  SELECT * FROM accounts WHERE name="priya";
+ERROR:  column "priya" does not exist at character 35
+STATEMENT:  SELECT * FROM accounts WHERE name=priya;
