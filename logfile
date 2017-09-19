@@ -1,0 +1,66 @@
+LOG:  database system was shut down at 2017-09-19 11:01:16 CDT
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  database "AccountsInfo" does not exist
+ERROR:  syntax error at or near "INTO" at character 31
+STATEMENT:  SELECT * FROM accounts
+	INSERT INTO accounts(name) VALUES ('sonia');
+ERROR:  syntax error at or near "INTO" at character 31
+STATEMENT:  SELECT * FROM accounts
+	INSERT INTO accounts(name) VALUES('sonia');
+ERROR:  syntax error at or near "INTO" at character 31
+STATEMENT:  SELECT * FROM accounts
+	INSERT INTO accounts(name) VALUES('sonia');
+ERROR:  syntax error at or near "VALUE" at character 28
+STATEMENT:  INSERT INTO accounts(name) VALUE('sonia');
+ERROR:  syntax error at or near "INTO" at character 31
+STATEMENT:  SELECT * FROM accounts
+	INSERT INTO accounts(name) VALUES('sonia');
+ERROR:  syntax error at or near "INTO" at character 31
+STATEMENT:  SELECT * FROM accounts
+	INSERT INTO accounts(name) VALUES('priya');
+ERROR:  syntax error at or near "INTO" at character 31
+STATEMENT:  SELECT * FROM accounts
+	INSERT INTO accounts(name) VALUES('priya');
+ERROR:  syntax error at or near "select" at character 24
+STATEMENT:  SELECT * FROM accounts
+	select * from transactions;
+ERROR:  invalid input syntax for type date: "Target" at character 48
+STATEMENT:  INSERT INTO transactions VALUES(1, 2017/11/12, 'Target', 'Clothes', 25.00, 0);
+ERROR:  syntax error at or near "PRIMARY" at character 40
+STATEMENT:  INSERT INTO transactions VALUES(SERIAL PRIMARY KEY, 1, 2017/11/12, 'Target', 'Clothes', 25.00, 0)
+	;
+ERROR:  syntax error at or near "PRIMARY" at character 93
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(SERIAL PRIMARY KEY, 1, 2017/11/12, 'Target', 'Clothes', 25.00, 0)
+	;
+ERROR:  column "date" is of type date but expression is of type integer at character 89
+HINT:  You will need to rewrite or cast the expression.
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(1, 2017/11/12, 'Target', 'Clothes', 25.00, 0)
+	;
+ERROR:  column "2017/11/12" does not exist at character 89
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(1, "2017/11/12", 'Target', 'Clothes', 25.00, 0)
+	;
+ERROR:  syntax error at or near "Allowance" at character 121
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(2, 2017-01-01, 'STARTING BALANCE, 'Allowance', 0.0, 5000.0
+ERROR:  syntax error at end of input at character 145
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(2, 2017-01-01, 'STARTING BALANCE', 'Allowance', 0.0, 5000.0
+ERROR:  syntax error at or near ";" at character 145
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(2, 2017-01-01, 'STARTING BALANCE', 'Allowance', 0.0, 5000.0;
+ERROR:  column "date" is of type date but expression is of type integer at character 89
+HINT:  You will need to rewrite or cast the expression.
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(2, 2017-01-01, 'STARTING BALANCE', 'Allowance', 0.0, 5000.0);
+ERROR:  syntax error at or near "INTO" at character 42
+STATEMENT:  DELETE FROM films USING producers
+	INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(1, "2017/11/12", 'Target', 'Clothes', 25.00, 0)
+	;
+ERROR:  relation "id" does not exist at character 32
+STATEMENT:  DELETE FROM transactions USING id WHERE id = 2;
+ERROR:  relation "account_id" does not exist at character 32
+STATEMENT:  DELETE FROM transactions USING account_id WHERE account_id = 2;
+ERROR:  syntax error at or near "S" at character 112
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(2, '2017/1/10', 'APPLEBEE'S', 'Entertainment', 100.0, 0.0);
+ERROR:  syntax error at or near "{" at character 87
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES(#{account_id}, "#{formatted_date}", "#{row["Payee"]}", "#{row["Category"]}", #{outflow}, #{inflow});
+ERROR:  syntax error at or near "S" at character 114
+STATEMENT:  INSERT INTO transactions (account_id, date, payee, category, outflow, inflow) VALUES('2', '2017/1/10', 'APPLEBEE'S', 'Entertainment', 100.0, 0.0);
