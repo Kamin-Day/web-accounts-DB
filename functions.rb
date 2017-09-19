@@ -5,6 +5,56 @@ require "csv"
 
 
 @conn = PGconn.open(:dbname => 'AccountsInfo')
+def buildHash(results)
+	accounts = {}
+
+	results.each do |transaction|
+	 
+	 # Add a key for each account to the accounts Hash.
+	  account = transaction["account_id"]
+
+	  if !accounts[account]
+	    accounts[account] = {
+	      balance: 0.00,
+	      categories: {
+	      }
+	    }
+	  end
+
+	  # Set the account which is being affected by this iteration.
+	  current_account = accounts[account]
+	  # Clean up outflow and inflow.
+	  outflow = transaction["outflow"].gsub(/[,\$]/, "").to_f.round(2)
+	  inflow = transaction["inflow"].gsub(/[,\$]/, "").to_f.round(2)
+	  transaction_amount = inflow - outflow
+
+	  # Keep a balance for current balance of the account.
+	  current_account[:balance] += transaction_amount
+	  category = transaction["category"].chomp
+
+	  # Initialize category.
+	  if !current_account[:categories][category]
+	    current_account[:categories][category] = {
+	      balance: 0.00,
+	      num_transactions: 0,
+	      average_transaction_cost: 0.00
+	    }
+	  end
+
+	  # balance category.
+	  current_account[:categories][category][:balance] += transaction_amount
+
+	  # Increment transaction counter.
+	  current_account[:categories][category][:num_transactions] += 1
+
+	  # Update average transaction cost.
+	  current_account[:categories][category][:average_transaction_cost] = current_account[:categories][category][:balance] / current_account[:categories][category][:num_transactions]  
+	end
+	
+
+	return accounts
+
+end
 
 # MESSAGES
 
@@ -32,8 +82,7 @@ end
 # if it is found, the results are returned
 # if not, false is returned
 def DBcheckForAccount(name)
-	result = @conn.exec("SELECT * FROM accounts").to_a
-	binding.pry
+	result = @conn.exec("SELECT * FROM accounts WHERE name='#{name}';").to_a
 	result.each do |account|
 		if account["name"] == name
 			return account["id"]
@@ -42,8 +91,59 @@ def DBcheckForAccount(name)
 	return false
 end
 
- SELECT * FROM accounts WHERE name='priya';
+#Takes in the account name and transaction results, calls a function to get
+# the change in funds then calculates the balance 
+def displayAccountBalance(results)
+	balance = 0
+	results.each do |transaction|
+		balance += changeInFunds(transaction['inflow'], transaction['outflow'])
+	end
+	return toCurrency(balance)
+end
 
+# #Takes in query results and returns an array of hashes with the category name and total spent
+# def getCategoryTotal(results)
+# 	categoryTotals = []
+# 	results.each do |transaction|
+# 		transaction 
+# 		gameWord.split('').each do |c|
+# 			gameField.push(Hash[c, false])
+# 	end
+
+
+# end
+
+def included?(list)
+
+end
+
+#Takes in the inflow and outflow of a transaction and returns the difference
+def changeInFunds (inflow, outflow)
+	return toNum(inflow) - toNum(outflow)
+end
+
+#Converts a floating point number into currency formatted string
+def toCurrency(ammount)
+	return "$" + ammount.round(2).to_s
+end
+
+#Converts a string currency to floating point num
+def toNum (input)
+	return input.gsub(/[,\$]/, "").to_f.round(2)
+end
+
+#Takes in an account ID and fetches all the transactions for that account 
+# from the database. Returns those results
+def getAccountInfo(id)
+	return @conn.exec("SELECT * FROM transactions WHERE account_id=#{id.to_i};").to_a
+end
+
+#Gets the information about all of the transactions from the database
+def getAllTrans
+	return @conn.exec("SELECT * FROM transactions").to_a
+end
+
+#Some function to read CSV and add to transactions table
 def CSVtoDB
 	CSV.foreach("accounts.txt", {headers: true, return_headers: false}) do |row|
 		 

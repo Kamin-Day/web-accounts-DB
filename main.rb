@@ -17,17 +17,25 @@ viewSelection = getResponse()
 # selectionID calls a function to query the accounts table in the DB to see 
 # if a certain account is present. if the account name is not found, it stores 
 # false return. if the account is found, selectionID stores the accounts ID from the DB
-selectionID = DBcheckForAccount(viewSelection)
+if viewSelection != "all"
+	selectionID = DBcheckForAccount(viewSelection)
 
 # if selectionID is false, the user is notified their query found no matches
-if !selectionID
-	puts notFound(viewSelection)
-
+	if !selectionID
+		puts notFound(viewSelection)
 # otherwise, queryResults calls a function which returns all of the information
 # regarding the transactions with that ID 
-else
- 	queryResults = getAccountInfo(selectionID)
+	else
+ 		queryResults = getAccountInfo(selectionID)
+ 	end
+else 
+	queryResults = getAllTrans()
 end
+
+accountsInfo = buildHash(queryResults)
+binding.pry
+puts displayAccountBalance(queryResults)
+
 binding.pry
 puts viewSelection
 
